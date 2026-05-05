@@ -162,30 +162,35 @@ export function AuthProvider({ children }) {
 
   // ── Login ──────────────────────────────────────────────────────────────────
 
-  const loginUser = useCallback(async (username, password) => {
-    const data = await apiLogin(username, password)
+ const loginUser = useCallback(async (username, password) => {
+  const data = await apiLogin(username, password)
 
-    // Guard: server must return both key fields
-    if (!data.wrapped_private_key || !data.pbkdf2_salt) {
-      throw new Error('Server did not return key material. Try registering again.')
-    }
-    // Guard: user profile must have a public key
-    if (!data.user?.public_key) {
-      throw new Error('Server did not return a public key for this account.')
-    }
+  // ✅ Key fields are inside the nested `user` object
+  const userData = data.user || {}
+  const wrappedPrivateKey = userData.wrapped_private_key
+  const pbkdf2Salt = userData.pbkdf2_salt
+  const serverPublicKey = userData.public_key
 
-    // Unwrap private key locally — throws OperationError if password is wrong
-    const privKey   = await unwrapPrivateKey(data.wrapped_private_key, data.pbkdf2_salt, password)
-      .catch(() => { throw new Error('Wrong password or corrupted key data.') })
+  if (!wrappedPrivateKey || !pbkdf2Salt) {
+    throw new Error('Server did not return key material. Try registering again.')
+  }
+  if (!serverPublicKey) {
+    throw new Error('Server did not return a public key for this account.')
+  }
 
-    const pubKeyObj = await importPublicKey(data.user.public_key)
+  // Unwrap private key using password
+  const privKey = await unwrapPrivateKey(wrappedPrivateKey, pbkdf2Salt, password)
+    .catch(() => { throw new Error('Wrong password or corrupted key data.') })
 
-    hydrateSession(data, privKey, pubKeyObj)
-    openWebSocket(data.access_token)
-    scheduleRefresh(data.refresh_token)
+  const pubKeyObj = await importPublicKey(serverPublicKey)
 
-    return data
-  }, [openWebSocket, scheduleRefresh, hydrateSession])
+  // Hydrate session (tokens are at top‑level, user object is stored as is)
+  hydrateSession(data, privKey, pubKeyObj)
+  openWebSocket(data.access_token)
+  scheduleRefresh(data.refresh_token)
+
+  return data
+}, [openWebSocket, scheduleRefresh, hydrateSession])
 
   const doLogout = useCallback(async () => {
     if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current)

@@ -56,7 +56,7 @@ export default function AuthScreen() {
       <div className={styles.card}>
         <div className={styles.logo}>
           <div className={styles.logoIcon}>🔒</div>
-          <h1 className={styles.logoText}>Whisper<span>Box</span></h1>
+          <h1 className={styles.logoText}>Whisper<span>App</span></h1>
         </div>
 
         <p className={styles.tagline}>
@@ -148,7 +148,7 @@ export default function AuthScreen() {
           {tab === 'register' ? (
             <>🔑 Keys generated <strong>locally</strong> · Wrapped key stored on server · Sign in from any device</>
           ) : (
-            <>🔐 Zero-knowledge · Private key unwrapped locally from your password</>
+            <> Zero-knowledge · Private key unwrapped locally from your password</>
           )}
         </div>
       </div>
