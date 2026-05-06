@@ -25,9 +25,10 @@ export default function AuthScreen() {
     if (!form.username.trim() || !form.password) return
 
     // Validation — match server rules exactly
-    if (form.username.length < 3)  return setError('Username must be at least 3 characters.')
-    if (form.username.length > 32) return setError('Username must be 32 characters or fewer.')
-    if (!/^[a-zA-Z0-9_-]+$/.test(form.username))
+    const trimmedUsername = form.username.trim()
+    if (trimmedUsername.length < 3)  return setError('Username must be at least 3 characters.')
+    if (trimmedUsername.length > 32) return setError('Username must be 32 characters or fewer.')
+    if (!/^[a-zA-Z0-9_-]+$/.test(trimmedUsername))
       return setError('Username: letters, numbers, _ and - only.')
     if (form.password.length < 8)  return setError('Password must be at least 8 characters.')
     if (form.password.length > 128) return setError('Password must be 128 characters or fewer.')

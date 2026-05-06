@@ -118,8 +118,6 @@ export function AuthProvider({ children }) {
  const registerUser = useCallback(async (username, displayName, password) => {
     setKeygenState('generating')
     try {
-      await new Promise(r => setTimeout(r, 50))
-
       const kp     = await generateKeyPair()
       const pubB64 = await exportPublicKey(kp.publicKey)
       const { wrappedPrivateKey, pbkdf2Salt } = await wrapPrivateKey(kp.privateKey, password)
