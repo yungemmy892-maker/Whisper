@@ -1,88 +1,44 @@
+/* Kept minimal — WhatsApp-style, only shown on error */
 .banner {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 10px 16px;
-  border-radius: 10px;
-  margin: 0 24px 4px;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
   font-size: 12px;
-  line-height: 1.5;
-  border: 1px solid;
+  line-height: 1.4;
+  border-bottom: 1px solid var(--wa-border);
 }
 
-.active {
-  background: rgba(79, 195, 161, 0.06);
-  border-color: rgba(79, 195, 161, 0.18);
-  color: var(--accent2);
-}
+.active { background: rgba(0,168,132,0.08); color: var(--wa-green); }
+.error  { background: rgba(241,92,109,0.08); color: var(--wa-danger); }
+.info   { background: rgba(134,150,160,0.08); color: var(--wa-muted); }
 
-.error {
-  background: rgba(255, 92, 108, 0.07);
-  border-color: rgba(255, 92, 108, 0.22);
-  color: var(--danger);
-}
+.icon   { font-size: 14px; flex-shrink: 0; }
+.text   { display: flex; flex-direction: column; }
+.label  { font-weight: 600; font-size: 11px; }
+.detail { font-size: 11px; opacity: 0.8; }
 
-.info {
-  background: rgba(124, 106, 245, 0.07);
-  border-color: rgba(124, 106, 245, 0.2);
-  color: var(--accent);
-}
-
-.icon {
-  font-size: 14px;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
-.text {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.label {
-  font-weight: 700;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.03em;
-}
-
-.detail {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  opacity: 0.8;
-}
-
-/* Inline chips */
 .chip {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-family: var(--font-mono);
   font-size: 10px;
-  color: var(--accent2);
+  color: var(--wa-green);
 }
 
 .chipDot {
   width: 5px; height: 5px;
   border-radius: 50%;
-  background: var(--accent2);
+  background: var(--wa-green);
   animation: pulse 2.5s ease-in-out infinite;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
-}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
 
 .errorChip {
-  font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--danger);
+  color: var(--wa-danger);
   font-style: italic;
 }
 
-.errorDetail {
-  opacity: 0.75;
-  font-size: 11px;
-}
+.errorDetail { opacity: 0.75; font-size: 11px; }

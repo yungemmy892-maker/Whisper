@@ -1,30 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #0a0a0f;
-  --bg2: #111118;
-  --bg3: #18181f;
-  --bg4: #1e1e28;
-  --border: #2a2a38;
-  --border2: #3a3a50;
-  --accent: #7c6af5;
-  --accent-dark: #5b4bd4;
-  --accent2: #4fc3a1;
-  --accent3: #f5a623;
-  --text: #e8e8f0;
-  --text2: #b0b0c0;
-  --muted: #6b6b80;
-  --danger: #ff5c6c;
-  --success: #4fc3a1;
-  --radius: 12px;
-  --font-sans: 'Syne', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  /* WhatsApp colours */
+  --wa-green:        #00a884;
+  --wa-green-dark:   #008069;
+  --wa-green-light:  #d9fdd3;  /* sent bubble */
+  --wa-teal-header:  #202c33;  /* sidebar/chat header */
+  --wa-bg:           #111b21;  /* app background */
+  --wa-sidebar:      #111b21;  /* sidebar panel */
+  --wa-chat-bg:      #0b141a;  /* chat background */
+  --wa-panel:        #202c33;  /* input/header panel */
+  --wa-bubble-in:    #202c33;  /* received bubble */
+  --wa-bubble-out:   #005c4b;  /* sent bubble */
+  --wa-border:       #2a3942;
+  --wa-text:         #e9edef;
+  --wa-text2:        #aebac1;
+  --wa-muted:        #667781;
+  --wa-icon:         #aebac1;
+  --wa-hover:        #2a3942;
+  --wa-active:       #2a3942;
+  --wa-search-bg:    #2a3942;
+  --wa-danger:       #f15c6d;
+  --wa-tick:         #53bdeb;  /* blue double-tick */
+
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --safe-top:    env(safe-area-inset-top,    0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left:   env(safe-area-inset-left,   0px);
+  --safe-right:  env(safe-area-inset-right,  0px);
 }
 
 html, body, #root {
@@ -33,17 +38,20 @@ html, body, #root {
 }
 
 body {
-  font-family: var(--font-sans);
-  background: var(--bg);
-  color: var(--text);
+  font-family: var(--font);
+  background: var(--wa-bg);
+  color: var(--wa-text);
   -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+input, textarea, select { font-size: 16px !important; }
 
-/* Selection */
-::selection { background: rgba(124, 106, 245, 0.3); }
+@media (hover: hover) {
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--wa-border); border-radius: 3px; }
+}
+
+::selection { background: rgba(0,168,132,0.25); }

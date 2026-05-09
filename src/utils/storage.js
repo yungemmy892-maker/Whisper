@@ -1,16 +1,5 @@
 /**
  * storage.js — Secure client-side key storage via IndexedDB
- *
- * WHY IndexedDB and NOT localStorage:
- *  - localStorage is synchronous, string-only, and easily accessible via XSS
- *  - IndexedDB is async, origin-isolated, and inaccessible cross-origin
- *  - Private keys stored here are ALREADY wrapped with AES-256-GCM (passphrase-derived),
- *    so even if IndexedDB is somehow read, keys are useless without the password
- *
- * Schema:
- *  DB: "whisperbox_v1"
- *  Store: "keys"  { id: username, encryptedPrivateKey: string }
- *  Store: "session" { id: "current", username, tokenExpiry }
  */
 
 const DB_NAME = 'whisperbox_v1'

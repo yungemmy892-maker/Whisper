@@ -36,13 +36,18 @@ function AppShell() {
     fetchConversations()
   }, [isAuthenticated, token])
 
-  // Refresh sidebar on any incoming WS message
+  // Refresh sidebar on any incoming WS message or presence update
   useEffect(() => {
-    const handler = (e) => {
+    const messageHandler = (e) => {
       if (e.detail?.type === 'message.receive') fetchConversations()
     }
-    window.addEventListener('wb:message', handler)
-    return () => window.removeEventListener('wb:message', handler)
+    const presenceHandler = () => fetchConversations()
+    window.addEventListener('wb:message', messageHandler)
+    window.addEventListener('wb:user:status', presenceHandler)
+    return () => {
+      window.removeEventListener('wb:message', messageHandler)
+      window.removeEventListener('wb:user:status', presenceHandler)
+    }
   }, [fetchConversations])
 
   function handleSelectConv(conv) {

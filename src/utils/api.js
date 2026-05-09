@@ -1,12 +1,5 @@
 /**
  * api.js — WhisperBox API client
- *
- * Base URL : https://whisperbox.koyeb.app
- * WebSocket: wss://whisperbox.koyeb.app/ws?token=<access_token>
- *
- * All field names in this file match the official API spec exactly.
- * Payload fields are camelCase: encryptedKey, encryptedKeyForSelf
- * REST body top-level field for recipient is `to` (not recipient_id)
  */
 
 export const BASE_URL = 'https://whisperbox.koyeb.app'
@@ -46,20 +39,6 @@ async function apiFetch(path, options = {}, token = null) {
 // ─── Auth ─────────────────────────────────────────────────────────────────────
 
 /**
- * POST /auth/register
- *
- * Request body:
- *   username        — 3–32 chars, letters/digits/_/- only
- *   display_name    — human-readable name shown in UI
- *   password        — 8–128 chars
- *   public_key      — base64 RSA-OAEP SPKI
- *   wrapped_private_key — base64 AES-KW encrypted PKCS8
- *   pbkdf2_salt     — base64 128-bit salt
- *
- * Response 201:
- *   { access_token, refresh_token, token_type, expires_in, user: { id, username, display_name, public_key, ... } }
- */
-/**
  * Register a new user.
  *
  * @param {string} username
@@ -76,7 +55,7 @@ export async function register({
   publicKey,
   wrappedPrivateKey,
   pbkdf2Salt,
-  displayName   // ← ADD THIS PARAMETER
+  displayName   
 }) 
  {
   return apiFetch('/auth/register', {
@@ -87,16 +66,13 @@ export async function register({
       public_key:          publicKey,
       wrapped_private_key: wrappedPrivateKey,
       pbkdf2_salt:         pbkdf2Salt,
-      display_name:        displayName,   // ← ADD THIS FIELD
+      display_name:        displayName,   
     }),
   })
 }
 
 /**
  * POST /auth/login
- *
- * Response 200 — same shape as /auth/register response.
- * Includes wrapped_private_key + pbkdf2_salt so client can restore the session.
  */
 export async function login(username, password) {
   return apiFetch('/auth/login', {
@@ -130,7 +106,6 @@ export async function logout(token, refreshTok) {
 
 /**
  * GET /users/search?q=<query>
- * Response: Array<{ id, username, display_name }>
  */
 export async function searchUsers(query, token) {
   return apiFetch(`/users/search?q=${encodeURIComponent(query)}`, {}, token)
@@ -138,7 +113,6 @@ export async function searchUsers(query, token) {
 
 /**
  * GET /users/{userId}/public-key
- * Response: { public_key: "<base64 RSA-OAEP SPKI>" }
  */
 export async function getUserPublicKey(userId, token) {
   return apiFetch(`/users/${userId}/public-key`, {}, token)
@@ -148,7 +122,6 @@ export async function getUserPublicKey(userId, token) {
 
 /**
  * GET /conversations
- * Response: Array<{ user_id, display_name, username, last_message_at }>
  */
 export async function getConversations(token) {
   return apiFetch('/conversations', {}, token)
@@ -156,12 +129,6 @@ export async function getConversations(token) {
 
 /**
  * GET /conversations/{userId}/messages
- *
- * Messages are returned newest-first — reverse before display.
- * Response: Array<{ id, from_user_id, to_user_id, payload, delivered, created_at }>
- *
- * payload shape: { ciphertext, iv, encryptedKey, encryptedKeyForSelf }
- *   — all camelCase, all base64
  *
  * @param {string}      userId
  * @param {string}      token
@@ -179,20 +146,6 @@ export async function getMessages(userId, token, before = null, limit = 50) {
 /**
  * POST /messages  — REST fallback when WebSocket is unavailable
  *
- * Request body (exact field names from API spec):
- *   {
- *     "to": "<recipient UUID>",           ← field is `to`, NOT `recipient_id`
- *     "payload": {
- *       "ciphertext":          "<base64>",
- *       "iv":                  "<base64>",
- *       "encryptedKey":        "<base64>", ← camelCase
- *       "encryptedKeyForSelf": "<base64>"  ← camelCase
- *     }
- *   }
- *
- * Response 201: MessageResponse
- *   { id, from_user_id, to_user_id, payload, delivered, created_at }
- *
  * @param {string} recipientId
  * @param {{ ciphertext, iv, encryptedKey, encryptedKeyForSelf }} payload
  * @param {string} token
@@ -201,12 +154,12 @@ export async function sendMessageREST(recipientId, { ciphertext, iv, encryptedKe
   return apiFetch('/messages', {
     method: 'POST',
     body: JSON.stringify({
-      to: recipientId,          // spec field name is `to`
+      to: recipientId,         
       payload: {
         ciphertext,
         iv,
-        encryptedKey,           // camelCase — matches spec exactly
-        encryptedKeyForSelf,    // camelCase — matches spec exactly
+        encryptedKey,          
+        encryptedKeyForSelf,    
       },
     }),
   }, token)

@@ -1,64 +1,72 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: var(--bg);
+  background: var(--wa-bg);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 18px;
   z-index: 500;
   animation: fadeIn 0.25s ease;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
 
 .lockIcon {
-  font-size: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  font-size: 36px;
   animation: bounce 1.2s ease-in-out infinite alternate;
 }
 
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  font-size: 1em;
+  color: inherit;
+  flex-shrink: 0;
+}
+
 @keyframes bounce {
-  from { transform: translateY(0px); }
+  from { transform: translateY(0); }
   to   { transform: translateY(-10px); }
 }
 
 .title {
   font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.4px;
+  font-weight: 600;
+  color: var(--wa-text);
 }
 
 .sub {
-  font-size: 13px;
-  color: var(--muted);
+  font-size: 14px;
+  color: var(--wa-muted);
   text-align: center;
   line-height: 1.7;
-  max-width: 300px;
+  max-width: 280px;
 }
 
-.sub strong {
-  color: var(--accent2);
-  font-weight: 600;
-}
+.sub strong { color: var(--wa-green); font-weight: 500; }
 
 .progressTrack {
-  width: 220px;
+  width: 200px;
   height: 3px;
-  background: var(--bg3);
+  background: var(--wa-border);
   border-radius: 2px;
   overflow: hidden;
-  margin-top: 8px;
 }
 
-/* Indeterminate animation — we don't know exactly how long keygen takes */
 .progressBar {
   height: 100%;
   width: 40%;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  background: var(--wa-green);
   border-radius: 2px;
   animation: slide 1.4s ease-in-out infinite;
 }
@@ -73,22 +81,18 @@
   gap: 8px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 4px;
 }
 
 .tag {
-  font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--accent2);
-  background: rgba(79, 195, 161, 0.08);
-  border: 1px solid rgba(79, 195, 161, 0.2);
-  padding: 3px 9px;
-  border-radius: 4px;
+  color: var(--wa-muted);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--wa-border);
+  padding: 3px 10px;
+  border-radius: 12px;
 }
 
 .hint {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 4px;
+  font-size: 12px;
+  color: var(--wa-muted);
 }

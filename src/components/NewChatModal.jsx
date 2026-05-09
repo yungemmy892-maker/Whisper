@@ -35,9 +35,13 @@ export default function NewChatModal({ onClose, onCreated }) {
     try {
       // Verify they have a public key (needed for E2EE)
       await getUserPublicKey(selectedUser.id, token)
+
       onCreated({
-        user_id:  selectedUser.id,
-        username: selectedUser.username,
+        user_id:         selectedUser.id,
+        username:        selectedUser.username,
+        display_name:    selectedUser.display_name ?? selectedUser.username,
+        online:          selectedUser.online ?? false,
+        last_message_at: null,
       })
       onClose()
     } catch (err) {
@@ -51,14 +55,14 @@ export default function NewChatModal({ onClose, onCreated }) {
         <div className={styles.dragHandle} />
         <div className={styles.modalHeader}>
           <h3>New Encrypted Conversation</h3>
-          <button className={styles.closeBtn} onClick={onClose}>✕</button>
+          <button className={styles.closeBtn} onClick={onClose}><span className={styles.icon} aria-hidden="true">✕</span></button>
         </div>
         <p className={styles.desc}>
           Search for a user. Their <strong>public key</strong> will be fetched
           to encrypt messages before they leave your device.
         </p>
 
-        {error && <div className={styles.error}>⚠ {error}</div>}
+        {error && <div className={styles.error}><span className={styles.icon} aria-hidden="true">⚠</span> {error}</div>}
 
         <form onSubmit={handleSearch}>
           <div className={styles.searchRow}>
@@ -75,7 +79,7 @@ export default function NewChatModal({ onClose, onCreated }) {
               className={styles.searchBtn}
               disabled={loading || !query.trim()}
             >
-              {loading ? <span className={styles.spinner} /> : '🔍'}
+              {loading ? <span className={styles.spinner} /> : <span className={styles.icon} aria-hidden="true">🔍</span>}
             </button>
           </div>
         </form>

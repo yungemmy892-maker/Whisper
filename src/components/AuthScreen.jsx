@@ -52,12 +52,12 @@ export default function AuthScreen() {
 
   const isWorking = loading || !!keygenState
 
-  return (
+   return (
     <div className={styles.screen}>
       <div className={styles.card}>
         <div className={styles.logo}>
-          <div className={styles.logoIcon}>🔒</div>
-          <h1 className={styles.logoText}>Whisper<span>App</span></h1>
+          <div className={styles.logoIcon}><span className={styles.icon} aria-hidden="true">🔒</span></div>
+          <h1 className={styles.logoText}>Whisper<span>Box</span></h1>
         </div>
 
         <p className={styles.tagline}>
@@ -78,7 +78,7 @@ export default function AuthScreen() {
           >Register</button>
         </div>
 
-        {error && <div className={styles.error}>⚠ {error}</div>}
+        {error && <div className={styles.error}><span className={styles.icon} aria-hidden="true">⚠</span> {error}</div>}
 
         <form onSubmit={handleSubmit} className={styles.form}>
 
@@ -147,12 +147,13 @@ export default function AuthScreen() {
 
         <div className={styles.securityNote}>
           {tab === 'register' ? (
-            <>🔑 Keys generated <strong>locally</strong> · Wrapped key stored on server · Sign in from any device</>
+            <> Keys generated <strong>locally</strong> Sign in from any device</>
           ) : (
-            <> Zero-knowledge · Private key unwrapped locally from your password</>
+            <> Zero-knowledge </>
           )}
         </div>
       </div>
     </div>
   )
 }
+

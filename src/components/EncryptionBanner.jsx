@@ -60,7 +60,7 @@ export function DecryptedChip() {
 }
 
 /**
- * Inline error chip — shown inside a message bubble that failed to decrypt.
+ * Inline error chip
  */
 export function DecryptErrorChip({ detail }) {
   return (

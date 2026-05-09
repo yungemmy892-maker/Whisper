@@ -1,19 +1,18 @@
-/* ── Base (mobile-first) ─────────────────────────────────────────────────── */
+/* WhatsApp sidebar — dark panel, green header, contact list */
+
 .sidebar {
-  background: var(--bg2);
-  border-right: 1px solid var(--border);
+  background: var(--wa-sidebar);
+  border-right: 1px solid var(--wa-border);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  /* Full screen on mobile */
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   height: 100dvh;
-  position: absolute;
-  inset: 0;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
   z-index: 10;
-  /* Respect notch */
   padding-top: var(--safe-top);
   padding-bottom: var(--safe-bottom);
 }
@@ -23,13 +22,12 @@
   pointer-events: none;
 }
 
-/* ── Tablet 768px+ ───────────────────────────────────────────────────────── */
 @media (min-width: 768px) {
   .sidebar {
     position: relative;
     inset: auto;
-    width: 72px;
-    min-width: 72px;
+    width: 360px;
+    min-width: 360px;
     height: 100%;
     transform: none !important;
     pointer-events: auto;
@@ -39,206 +37,186 @@
   }
 }
 
-/* ── Desktop 1024px+ ─────────────────────────────────────────────────────── */
-@media (min-width: 1024px) {
-  .sidebar {
-    width: 300px;
-    min-width: 300px;
-  }
+@media (min-width: 768px) and (max-width: 1023px) {
+  .sidebar { width: 80px; min-width: 80px; }
+  .logoText, .username, .convName, .convPreview,
+  .e2eeBadge, .newChatLabel, .encStatusText, .logoutText { display: none; }
 }
 
-/* ── Header ──────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .sidebar { width: 100%; min-width: 100%; }
+  .header { padding: 10px 14px; }
+  .searchBar { padding: 8px 10px; }
+  .newChatBtn { padding: 10px 12px; gap: 8px; }
+  .newChatLabel { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .convItem { padding: 10px 12px; }
+  .convPreview { font-size: 12px; }
+  .footer { flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 10px 12px 12px; }
+  .logoutBtn { padding: 8px 12px; }
+}
+
+/* ── Header (WhatsApp dark teal) ─────────────────────────────────────── */
 .header {
-  padding: 18px 16px 14px;
-  border-bottom: 1px solid var(--border);
+  background: var(--wa-teal-header);
+  padding: 10px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
   flex-shrink: 0;
+  min-height: 56px;
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-  .header {
-    padding: 16px 0;
-    justify-content: center;
-    border-bottom: 1px solid var(--border);
-  }
+  .header { padding: 10px 0; justify-content: center; }
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+.logo { display: flex; align-items: center; gap: 10px; }
 
 .logoIcon {
-  width: 32px; height: 32px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  border-radius: 8px;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--wa-green);
   display: flex; align-items: center; justify-content: center;
-  font-size: 16px;
+  font-size: 20px;
   flex-shrink: 0;
 }
 
 .logoText {
-  font-size: 16px;
-  font-weight: 800;
-  letter-spacing: -0.3px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--wa-text);
+  letter-spacing: -0.2px;
 }
 
-/* Hide text labels on tablet */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .logoText  { display: none; }
-  .username  { display: none; }
-  .convName  { display: none; }
-  .convPreview { display: none; }
-  .e2eeBadge { display: none; }
-  .newChatLabel { display: none; }
-  .encStatusText { display: none; }
-  .logoutText { display: none; }
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4em;
+  height: 1.4em;
+  font-size: 1.05em;
+  color: var(--wa-muted);
+  flex-shrink: 0;
 }
 
 .userBadge {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 10px 4px 4px;
-  background: var(--bg3);
-  border-radius: 20px;
-  max-width: 140px;
-  overflow: hidden;
-}
-
-@media (min-width: 768px) and (max-width: 1023px) {
-  .userBadge {
-    background: none;
-    padding: 0;
-    max-width: unset;
-  }
+  gap: 8px;
 }
 
 .userAvatar {
-  width: 26px; height: 26px;
+  width: 38px; height: 38px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  background: var(--wa-green-dark);
   display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 800; color: #fff;
+  font-size: 15px; font-weight: 700; color: #fff;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .username {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text2);
+  font-size: 13px;
+  color: var(--wa-text2);
+  font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 120px;
 }
 
-/* ── New Chat Button ─────────────────────────────────────────────────────── */
+/* ── New Chat / Search ───────────────────────────────────────────────── */
+.searchBar {
+  padding: 8px 12px;
+  background: var(--wa-sidebar);
+  flex-shrink: 0;
+}
+
 .newChatBtn {
-  margin: 12px 14px;
-  padding: 10px;
-  border: 1.5px dashed var(--border2);
-  background: none;
-  border-radius: 10px;
-  color: var(--muted);
-  font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 600;
+  width: 100%;
+  padding: 9px 12px;
+  background: var(--wa-search-bg);
+  border: none;
+  border-radius: 8px;
+  color: var(--wa-muted);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 400;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background 0.15s;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
-  flex-shrink: 0;
-  /* Larger tap target on mobile */
-  min-height: 48px;
+  gap: 10px;
+  min-height: 38px;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .newChatBtn:hover, .newChatBtn:active {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: rgba(124, 106, 245, 0.06);
+  background: var(--wa-hover);
 }
+
+.newChatIcon {
+  font-size: 16px;
+  color: var(--wa-muted);
+  flex-shrink: 0;
+}
+
+.newChatLabel { font-size: 14px; color: var(--wa-muted); }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-  .newChatBtn {
-    margin: 10px 8px;
-    padding: 12px 8px;
-    border-radius: 12px;
-  }
+  .searchBar { padding: 8px 6px; }
+  .newChatBtn { justify-content: center; padding: 12px 8px; }
 }
 
-/* ── Conversation List ───────────────────────────────────────────────────── */
+/* ── Conversation list ───────────────────────────────────────────────── */
 .convList {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 4px 8px 12px;
   -webkit-overflow-scrolling: touch;
-}
-
-@media (min-width: 768px) and (max-width: 1023px) {
-  .convList { padding: 4px 6px 12px; }
 }
 
 .empty {
   padding: 40px 16px;
   text-align: center;
-  color: var(--muted);
+  color: var(--wa-muted);
   font-size: 13px;
   line-height: 1.7;
 }
 
-.emptyIcon { font-size: 32px; margin-bottom: 10px; }
-
-@media (min-width: 768px) and (max-width: 1023px) {
-  .empty { padding: 20px 8px; }
-  .emptyIcon { font-size: 22px; margin-bottom: 6px; }
-  .emptyText { display: none; }
-}
+.emptyIcon { font-size: 40px; margin-bottom: 12px; }
 
 .convItem {
   width: 100%;
-  padding: 12px 10px;
-  border-radius: 12px;
-  cursor: pointer;
+  padding: 10px 16px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   background: none;
   border: none;
-  color: var(--text);
+  color: var(--wa-text);
   text-align: left;
-  transition: background 0.15s;
-  margin-bottom: 2px;
-  /* Large tap target */
-  min-height: 52px;
+  cursor: pointer;
+  transition: background 0.1s;
+  min-height: 68px;
+  border-bottom: 1px solid rgba(134,150,160,0.08);
   -webkit-tap-highlight-color: transparent;
 }
 
-.convItem:hover  { background: var(--bg3); }
-.convItem:active { background: var(--bg3); }
-.convActive      { background: rgba(124, 106, 245, 0.1) !important; }
+.convItem:hover  { background: var(--wa-hover); }
+.convItem:active { background: var(--wa-active); }
+.convActive      { background: var(--wa-active) !important; }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-  .convItem {
-    padding: 10px 8px;
-    justify-content: center;
-    gap: 0;
-  }
+  .convItem { padding: 12px 8px; justify-content: center; gap: 0; min-height: 60px; }
 }
 
 .convAvatar {
-  width: 42px; height: 42px;
+  width: 48px; height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #22224a, #1a2f3f);
-  border: 1.5px solid var(--border);
+  background: var(--wa-green-dark);
   display: flex; align-items: center; justify-content: center;
-  font-size: 15px; font-weight: 800; color: var(--accent2);
+  font-size: 18px; font-weight: 600; color: #fff;
   flex-shrink: 0;
 }
 
@@ -247,97 +225,123 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
+}
+
+.convMeta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .convName {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--wa-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.convPreview {
+.convTime {
   font-size: 11px;
-  color: var(--muted);
-  font-family: var(--font-mono);
-}
-
-.e2eeBadge {
-  font-size: 10px;
-  color: var(--accent2);
-  background: rgba(79, 195, 161, 0.08);
-  border: 1px solid rgba(79, 195, 161, 0.18);
-  padding: 2px 7px;
-  border-radius: 5px;
-  font-family: var(--font-mono);
-  font-weight: 500;
+  color: var(--wa-muted);
   flex-shrink: 0;
 }
 
-/* ── Footer ──────────────────────────────────────────────────────────────── */
-.footer {
-  padding: 12px 14px;
-  border-top: 1px solid var(--border);
+.convPreview {
+  font-size: 13px;
+  color: var(--wa-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  gap: 4px;
+}
+
+.convBottom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.presenceTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--wa-green);
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--wa-muted);
   flex-shrink: 0;
-  padding-bottom: max(12px, var(--safe-bottom));
+}
+
+.statusOnline { background: var(--wa-green); }
+
+.e2eeBadge { display: none; }
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+.footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--wa-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding-bottom: max(10px, var(--safe-bottom));
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-  .footer {
-    padding: 12px 8px;
-    align-items: center;
-    padding-bottom: 12px;
-  }
+  .footer { flex-direction: column; gap: 8px; padding: 10px 6px; }
 }
 
 .encStatus {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
   font-size: 11px;
-  color: var(--accent2);
-  font-family: var(--font-mono);
+  color: var(--wa-muted);
 }
 
 .encDot {
-  width: 7px; height: 7px;
+  width: 6px; height: 6px;
   border-radius: 50%;
-  background: var(--accent2);
+  background: var(--wa-green);
   animation: pulse 2.5s ease-in-out infinite;
   flex-shrink: 0;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(79,195,161,0.4); }
-  50% { opacity: 0.6; box-shadow: 0 0 0 4px rgba(79,195,161,0); }
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
 }
 
 .logoutBtn {
-  padding: 10px;
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--muted);
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 6px;
-  width: 100%;
-  min-height: 44px;
+  padding: 7px 14px;
+  background: none;
+  border: 1px solid var(--wa-border);
+  border-radius: 20px;
+  color: var(--wa-muted);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 36px;
   -webkit-tap-highlight-color: transparent;
 }
 
 .logoutBtn:hover, .logoutBtn:active {
-  border-color: var(--danger);
-  color: var(--danger);
+  border-color: var(--wa-danger);
+  color: var(--wa-danger);
 }

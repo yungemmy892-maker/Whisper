@@ -69,6 +69,9 @@ export function AuthProvider({ children }) {
         try {
           const frame = JSON.parse(event.data)
           window.dispatchEvent(new CustomEvent('wb:message', { detail: frame }))
+          if (frame.event === 'user.status') {
+            window.dispatchEvent(new CustomEvent('wb:user:status', { detail: frame }))
+          }
         } catch {}
       }
     } catch (err) {

@@ -41,6 +41,7 @@ export default function ChatWindow({ conversation, onConversationUpdate, onBack,
 
   const recipientId   = conversation?.user_id  || null
   const recipientName = conversation?.display_name || conversation?.username || '?'
+  const recipientOnline = conversation?.online === true
 
   // ── Decrypt one message ────────────────────────────────────────────────────
   // API payload shape (camelCase per spec):
@@ -272,19 +273,20 @@ export default function ChatWindow({ conversation, onConversationUpdate, onBack,
         <div className={styles.headerAvatar}>{recipientName[0]?.toUpperCase()}</div>
         <div className={styles.headerInfo}>
           <h3 className={styles.headerName}>{recipientName}</h3>
-          <p className={styles.headerSub}>RSA-OAEP key exchange · AES-256-GCM encrypted</p>
+          <p className={styles.headerSub}>
+            {recipientOnline ? (
+              <><span className={styles.icon} aria-hidden="true">🟢</span> Online · </>
+            ) : (
+              <><span className={styles.icon} aria-hidden="true">⚪</span> Offline · </>
+            )}
+            {hasDecryptError ? 'Could not decrypt some messages' : 'End-to-end encrypted'}
+          </p>
         </div>
         <div className={`${styles.e2eeBadge} ${wsConnected ? '' : styles.e2eeBadgeOffline}`}>
           <div className={styles.dot} />
           <span>{wsConnected ? 'E2EE · Live' : 'E2EE · Polling'}</span>
         </div>
       </div>
-
-      {/* Security banner */}
-      {hasDecryptError
-        ? <EncryptionBanner variant="error" />
-        : <EncryptionBanner variant="active" />
-      }
 
       {/* Messages */}
       <div className={styles.messages}>
@@ -297,7 +299,7 @@ export default function ChatWindow({ conversation, onConversationUpdate, onBack,
 
         {!loading && messages.length === 0 && (
           <div className={styles.noMessages}>
-            🔒 End-to-end encrypted. Send a message to get started.
+            <span className={styles.icon} aria-hidden="true">🔒</span> End-to-end encrypted. Send a message to get started.
           </div>
         )}
 
@@ -329,7 +331,7 @@ export default function ChatWindow({ conversation, onConversationUpdate, onBack,
 
       {/* Input */}
       <div className={styles.inputArea}>
-        {sendError && <div className={styles.sendError}>⚠ {sendError}</div>}
+        {sendError && <div className={styles.sendError}><span className={styles.icon} aria-hidden="true">⚠</span> {sendError}</div>}
         <div className={styles.inputRow}>
           <textarea
             ref={textareaRef}
@@ -345,9 +347,16 @@ export default function ChatWindow({ conversation, onConversationUpdate, onBack,
             className={styles.sendBtn}
             onClick={handleSend}
             disabled={sending || !text.trim()}
-            title="Send (Enter)"
+            title="Send"
           >
-            {sending ? <span className={styles.spinner} /> : '↑'}
+            {sending
+              ? <span className={styles.spinner} />
+              : (
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+              )
+            }
           </button>
         </div>
         <div className={styles.inputHint}>
